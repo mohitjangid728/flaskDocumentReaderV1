@@ -35,7 +35,7 @@ def upload_file():
             doc.save("Output.html")
             file = codecs.open("Output.html", "r", "utf-8")
             output = file.read()
-            file.close()
+            # file.close()
             resp = jsonify(output)
             # resp = jsonify({'message' : 'File successfully uploaded'})
             resp.status_code = 201
