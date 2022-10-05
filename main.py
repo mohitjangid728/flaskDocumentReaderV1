@@ -31,14 +31,16 @@ def upload_file():
         if file and allowed_file(file.filename):
             filename = secure_filename(file.filename)
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], 'hello.docx'))
-            doc = aw.Document("hello.docx")
-            doc.save("Output.html")
-            file = codecs.open("Output.html", "r", "utf-8")
-            output = file.read()
-            file.close()
-            resp = jsonify({'message' : 'File successfully uploaded'})
+		if(aw.Document("hello.docx")):
+                doc = aw.Document("hello.docx")
+                doc.save("Output.html")
+                file = codecs.open("Output.html", "r", "utf-8")
+                output = file.read()
+                file.close()
+                return jsonify(output)
+            resp = jsonify({'message' : 'File successfully uploaded but cannot read word document...'})
             resp.status_code = 201
-            return jsonify(output)
+            return jsonify(resp)
         else:
             resp = jsonify({'message' : 'Allowed file types are txt, pdf, png, jpg, jpeg, gif'})
             resp.status_code = 400
@@ -47,16 +49,6 @@ def upload_file():
         resp = jsonify({'message' : 'Invalid API Key...'})
         resp.status_code = 201
         return resp
-
-@app.route('/get-document', methods=['GET'])
-def getData():
-	if(aw.Document("hello.docx")):
-	    doc = aw.Document("hello.docx")
-	    doc.save("Output.html")
-	    file = codecs.open("Output.html", "r", "utf-8")
-	    output = file.read()
-	    file.close()
-	    return jsonify(output)
     
 if __name__ == "__main__":
     app.run()
