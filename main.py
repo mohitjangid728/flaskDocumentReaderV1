@@ -11,6 +11,10 @@ ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif','docx'])
 def allowed_file(filename):
 	return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
+@app.route('/', methods=['GET'])
+def home_page():
+	return {'message' : 'No file part in the request'}
+
 @app.route('/file-upload', methods=['POST'])
 def upload_file():
 	# check if the post request has the file part
