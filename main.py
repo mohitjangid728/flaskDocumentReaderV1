@@ -6,14 +6,16 @@ from werkzeug.utils import secure_filename
 import aspose.words as aw
 import codecs
 
-ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif','docx'])
+ALLOWED_EXTENSIONS = set(['docx'])
 
 def allowed_file(filename):
 	return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 @app.route('/', methods=['GET'])
 def home_page():
-	return {'message' : 'No file part in the request'}
+	resp = jsonify({'Error message:' : 'You cannot access without authentication...'})
+        resp.status_code = 201
+        return resp
 
 @app.route('/file-upload', methods=['POST'])
 def upload_file():
@@ -57,6 +59,16 @@ def getData():
         resp = jsonify({'message' : 'Invalid API Key...'})
         resp.status_code = 201
         return resp
+
+@app.route('/getdocument', methods=['GET'])
+def getData():
+    if(aw.Document("hello.docx")):
+        doc = aw.Document("hello.docx")
+        doc.save("Output.html")
+        file = codecs.open("Output.html", "r", "utf-8")
+        output = file.read()
+        file.close()
+        return jsonify(output)
 
 if __name__ == "__main__":
     app.run()
