@@ -31,9 +31,14 @@ def upload_file():
         if file and allowed_file(file.filename):
             filename = secure_filename(file.filename)
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], 'hello.docx'))
+            doc = aw.Document("hello.docx")
+            doc.save("Output.html")
+            file = codecs.open("Output.html", "r", "utf-8")
+            output = file.read()
+            file.close()
             resp = jsonify({'message' : 'File successfully uploaded'})
             resp.status_code = 201
-            return resp
+            return jsonify(output)
         else:
             resp = jsonify({'message' : 'Allowed file types are txt, pdf, png, jpg, jpeg, gif'})
             resp.status_code = 400
