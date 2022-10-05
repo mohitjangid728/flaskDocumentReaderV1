@@ -6,16 +6,14 @@ from werkzeug.utils import secure_filename
 import aspose.words as aw
 import codecs
 
-ALLOWED_EXTENSIONS = set(['docx'])
+ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif','docx'])
 
 def allowed_file(filename):
 	return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 @app.route('/', methods=['GET'])
 def home_page():
-	resp = jsonify({'Error message:' : 'You cannot access without authentication...'})
-        resp.status_code = 201
-        return resp
+	return {'Error message: ' : 'You cannot access without authentication...'}
 
 @app.route('/file-upload', methods=['POST'])
 def upload_file():
@@ -47,28 +45,13 @@ def upload_file():
 
 @app.route('/get-document', methods=['GET'])
 def getData():
-    if request.args['auth'] == 'qtgaykvt857zw8v9cq5o':
-        if(aw.Document("hello.docx")):
-            doc = aw.Document("hello.docx")
-            doc.save("Output.html")
-            file = codecs.open("Output.html", "r", "utf-8")
-            output = file.read()
-            file.close()
-            return jsonify(output)
-    else:
-        resp = jsonify({'message' : 'Invalid API Key...'})
-        resp.status_code = 201
-        return resp
-
-@app.route('/getdocument', methods=['GET'])
-def getData():
-    if(aw.Document("hello.docx")):
-        doc = aw.Document("hello.docx")
-        doc.save("Output.html")
-        file = codecs.open("Output.html", "r", "utf-8")
-        output = file.read()
-        file.close()
-        return jsonify(output)
-
+	if(aw.Document("hello.docx")):
+	    doc = aw.Document("hello.docx")
+	    doc.save("Output.html")
+	    file = codecs.open("Output.html", "r", "utf-8")
+	    output = file.read()
+	    file.close()
+	    return jsonify(output)
+    
 if __name__ == "__main__":
     app.run()
