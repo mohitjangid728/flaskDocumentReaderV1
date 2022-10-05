@@ -6,7 +6,7 @@ from werkzeug.utils import secure_filename
 import aspose.words as aw
 import codecs
 
-ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif','docx'])
+ALLOWED_EXTENSIONS = set(['docx'])
 
 def allowed_file(filename):
 	return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
