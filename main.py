@@ -30,13 +30,22 @@ def upload_file():
             return resp
         if file and allowed_file(file.filename):
             filename = secure_filename(file.filename)
-            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-            # doc = aw.Document(filename)
-            # doc.save("Output.html")
-            # file = codecs.open("Output.html", "r", "utf-8")
-            # output = file.read()
-            # file.close()
-            # resp = jsonify(output)
+            file.save(os.path.join(app.config['UPLOAD_FOLDER'], 'hello.docx'))
+            try:
+                doc = aw.Document("./uploads/hello.docx")
+                doc.save("./uploads/Output.html")
+                file = codecs.open("./uploads/Output.html", "r", "utf-8")
+                output = file.read()
+                file.close()
+                resp = output
+                # resp.status_code = 201
+                return resp
+            except Exception:
+                resp = jsonify({'message' : 'There was an error reading the file'})
+                resp.status_code = 201
+                return resp
+            finally:
+                file.close()
             resp = jsonify({'message' : 'File successfully uploaded'})
             resp.status_code = 201
             return resp
@@ -48,6 +57,6 @@ def upload_file():
         resp = jsonify({'message' : 'Invalid API Key...'})
         resp.status_code = 201
         return resp
-    
+
 if __name__ == "__main__":
     app.run()
