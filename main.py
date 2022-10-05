@@ -37,9 +37,6 @@ def upload_file():
                 file = codecs.open("Output.html", "r", "utf-8")
                 output = file.read()
                 file.close()
-                resp = jsonify(output)
-                resp.status_code = 201
-                return resp
             resp = jsonify({'message' : 'File successfully uploaded but cannot read word document...'})
             resp.status_code = 201
             return resp
